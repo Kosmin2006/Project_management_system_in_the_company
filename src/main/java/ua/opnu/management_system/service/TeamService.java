@@ -1,53 +1,38 @@
 package ua.opnu.management_system.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.opnu.management_system.project.Employee;
 import ua.opnu.management_system.project.Team;
 import ua.opnu.management_system.repository.TeamRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TeamService {
 
     private final TeamRepository teamRepository;
 
-    public TeamService(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
-
-    public Team create(Team team) {
+    public Team createTeam(Team team) {
         return teamRepository.save(team);
     }
 
-    public List<Team> getAll() {
+    public List<Team> getAllTeams() {
         return teamRepository.findAll();
     }
 
-    public Optional<Team> getById(Long id) {
-        return teamRepository.findById(id);
-    }
-
     public Team addMember(Long teamId, Employee employee) {
-        Optional<Team> teamOpt = teamRepository.findById(teamId);
-        if (teamOpt.isPresent()) {
-            Team team = teamOpt.get();
-            team.getMembers().add(employee);
-            return teamRepository.save(team);
-        } else {
-            throw new RuntimeException("Team not found with id " + teamId);
-        }
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Команду не знайдено"));
+        team.getMembers().add(employee);
+        return teamRepository.save(team);
     }
 
-    public Team removeMember(Long teamId, Long employeeId) {
-        Optional<Team> teamOpt = teamRepository.findById(teamId);
-        if (teamOpt.isPresent()) {
-            Team team = teamOpt.get();
-            team.getMembers().removeIf(member -> member.getId().equals(employeeId));
-            return teamRepository.save(team);
-        } else {
-            throw new RuntimeException("Team not found with id " + teamId);
-        }
+    public Team removeMember(Long teamId, Employee employee) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Команду не знайдено"));
+        team.getMembers().remove(employee);
+        return teamRepository.save(team);
     }
 }

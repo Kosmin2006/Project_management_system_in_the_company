@@ -1,5 +1,6 @@
 package ua.opnu.management_system.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.opnu.management_system.project.Employee;
@@ -9,52 +10,41 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
-
-    // Додати нового працівника
+    // 5. Додати нового працівника
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.create(employee));
+        return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    // Отримати всіх працівників
+    // 6. Отримати всіх працівників
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAll());
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    // Отримати працівника за id
+    // Отримати працівника за ID (додатково)
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-        return employeeService.getById(id)
+        return employeeService.getEmployeeById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Оновити працівника
+    // 7. Оновити інформацію про працівника
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
-        return employeeService.getById(id)
-                .map(existingEmployee -> {
-                    employee.setId(id);
-                    return ResponseEntity.ok(employeeService.update(employee));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
     }
 
-    // Видалити працівника
+    // 8. Видалити працівника
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        if (employeeService.getById(id).isPresent()) {
-            employeeService.delete(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
+        employeeService.deleteEmployee(id);
+        return ResponseEntity.noContent().build();
     }
 }

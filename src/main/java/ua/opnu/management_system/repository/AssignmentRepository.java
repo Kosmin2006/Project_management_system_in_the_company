@@ -6,6 +6,6 @@ import ua.opnu.management_system.project.Assignment;
 import java.util.List;
 
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
-
     List<Assignment> findByEmployeeId(Long employeeId);
+    List<Assignment> findByProjectId(Long projectId);
 }

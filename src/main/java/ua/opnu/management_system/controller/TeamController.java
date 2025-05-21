@@ -1,5 +1,6 @@
 package ua.opnu.management_system.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.opnu.management_system.project.Employee;
@@ -10,35 +11,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/teams")
+@RequiredArgsConstructor
 public class TeamController {
 
     private final TeamService teamService;
 
-    public TeamController(TeamService teamService) {
-        this.teamService = teamService;
-    }
-
-    // Додати команду
+    // 17. Додати команду
     @PostMapping
     public ResponseEntity<Team> createTeam(@RequestBody Team team) {
-        return ResponseEntity.ok(teamService.create(team));
+        return ResponseEntity.ok(teamService.createTeam(team));
     }
 
-    // Отримати всі команди
+    // 20. Отримати всі команди
     @GetMapping
     public ResponseEntity<List<Team>> getAllTeams() {
-        return ResponseEntity.ok(teamService.getAll());
+        return ResponseEntity.ok(teamService.getAllTeams());
     }
 
-    // Додати учасника до команди
+    // 18. Додати учасника до команди
     @PostMapping("/{teamId}/members")
-    public ResponseEntity<Team> addMemberToTeam(@PathVariable Long teamId, @RequestBody Employee employee) {
+    public ResponseEntity<Team> addMember(@PathVariable Long teamId, @RequestBody Employee employee) {
         return ResponseEntity.ok(teamService.addMember(teamId, employee));
     }
 
-    // Видалити учасника з команди
-    @DeleteMapping("/{teamId}/members/{employeeId}")
-    public ResponseEntity<Team> removeMemberFromTeam(@PathVariable Long teamId, @PathVariable Long employeeId) {
-        return ResponseEntity.ok(teamService.removeMember(teamId, employeeId));
+    // 19. Видалити учасника з команди
+    @DeleteMapping("/{teamId}/members")
+    public ResponseEntity<Team> removeMember(@PathVariable Long teamId, @RequestBody Employee employee) {
+        return ResponseEntity.ok(teamService.removeMember(teamId, employee));
     }
 }
