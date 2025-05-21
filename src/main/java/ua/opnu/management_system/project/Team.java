@@ -1,13 +1,18 @@
 package ua.opnu.management_system.project;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -19,30 +24,4 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
     private List<Employee> members;
-
-    public Team() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Employee> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Employee> members) {
-        this.members = members;
-    }
 }
