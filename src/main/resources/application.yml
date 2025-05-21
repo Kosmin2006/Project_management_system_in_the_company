@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://dpg-d076ftadbo4c73alhd5g-a/project_management_system_in_the_compani
+    username: kosmin
+    password: 3IR0HyCurreKZSnbHvShHu8C0O6tFajM
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
